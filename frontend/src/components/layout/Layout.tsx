@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import CartDrawer from '../../features/cart/CartDrawer';
@@ -20,12 +23,45 @@ export default function Layout() {
       clearLocalCart();
     }
   }, [isAuthenticated, setCart, clearLocalCart]);
+
+  // Initialize Lenis Smooth Scrolling & GSAP Integration
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const raf = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(raf);
+      lenis.destroy();
+    };
+  }, []);
+
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
       <main className="flex-1 pt-[72px]">
         <AnimatePresence mode="wait">
           <motion.div
+            key={location.pathname}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}

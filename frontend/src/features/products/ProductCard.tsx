@@ -215,7 +215,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             >
               <button 
                 onClick={(e) => handleUpdateQuantity(e, quantityInCart - 1)}
-                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors cursor-pointer"
+                disabled={quantityInCart <= 1 || isAdding}
+                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
               >
                 <Minus size={14} strokeWidth={2.5} />
               </button>
@@ -224,7 +225,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
               <button 
                 onClick={(e) => handleUpdateQuantity(e, quantityInCart + 1)}
-                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors cursor-pointer"
+                disabled={isAdding}
+                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
               >
                 <Plus size={14} strokeWidth={2.5} />
               </button>
@@ -236,7 +238,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => { e.stopPropagation(); handleAddToCart(e); }}
               disabled={isAdding}
-              className={`absolute bottom-4 right-4 bg-[#111111] hover:bg-[#222222] text-white rounded-full h-[40px] px-5 text-[13px] font-[650] flex items-center justify-center gap-2 transition-all shadow-[0_8px_16px_rgba(0,0,0,0.12)] z-50 pointer-events-auto cursor-pointer ${isAdding ? 'opacity-80 cursor-wait' : ''} ${
+              className={`absolute bottom-4 right-4 bg-[#111111] hover:bg-[#222222] text-white rounded-full h-[40px] px-5 text-[13px] font-[650] flex items-center justify-center gap-2 transition-all shadow-[0_8px_16px_rgba(0,0,0,0.12)] z-50 pointer-events-auto cursor-pointer ${isAdding ? 'opacity-80 pointer-events-none' : ''} ${
                 !isHovered ? 'md:opacity-0 md:translate-y-2 opacity-90' : ''
               }`}
             >

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../../store/useCartStore';
 import { cartApi } from '../../api/cart';
@@ -9,6 +9,28 @@ import { slideInRight } from '../../lib/animations';
 export default function CartDrawer() {
   const { isCartOpen, closeCart, items, totalAmount, totalItems, setCart } = useCartStore();
   const [updatingItemId, setUpdatingItemId] = useState<string | null>(null);
+  const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
+
+  // Auto-select items when loaded or added
+  useEffect(() => {
+    setSelectedItemIds(prev => {
+      const currentIds = items.map(i => i.id);
+      if (prev.length === 0 && currentIds.length > 0) return currentIds;
+      const stillExisting = prev.filter(id => currentIds.includes(id));
+      const newItems = currentIds.filter(id => !prev.includes(id));
+      return [...stillExisting, ...newItems];
+    });
+  }, [items]);
+
+  const toggleSelection = (id: string) => {
+    setSelectedItemIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const selectedTotal = items
+    .filter(item => selectedItemIds.includes(item.id))
+    .reduce((sum, item) => sum + item.subtotal, 0);
 
   const handleUpdateQuantity = async (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -128,13 +150,25 @@ export default function CartDrawer() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20, height: 0 }}
-                        className="flex gap-4 p-3 rounded-xl bg-gray-50/50"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-gray-50/50"
                       >
+                        {/* Selection Circle */}
+                        <button
+                          onClick={() => toggleSelection(item.id)}
+                          className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center transition-colors cursor-pointer ${
+                            selectedItemIds.includes(item.id) 
+                              ? 'bg-[#111111] border-[#111111] text-white' 
+                              : 'bg-white border-gray-300 hover:border-gray-400 text-transparent'
+                          }`}
+                        >
+                          <Check size={12} strokeWidth={3} className={selectedItemIds.includes(item.id) ? 'opacity-100' : 'opacity-0'} />
+                        </button>
+
                         {/* Product Image */}
                         <Link
                           to={`/products/${item.productSlug}`}
                           onClick={closeCart}
-                          className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0"
+                          className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0"
                         >
                           <img
                             src={item.productImage}
@@ -203,8 +237,10 @@ export default function CartDrawer() {
             {items.length > 0 && (
               <div className="border-t border-gray-100 px-6 py-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Subtotal</span>
-                  <span className="text-lg font-bold text-charcoal">₹{totalAmount.toFixed(2)}</span>
+                  <span className="text-sm text-gray-500">
+                    Subtotal <span className="text-xs ml-1">({selectedItemIds.length} selected)</span>
+                  </span>
+                  <span className="text-lg font-bold text-charcoal">₹{selectedTotal.toFixed(2)}</span>
                 </div>
                 <p className="text-[11px] text-gray-400">Shipping calculated at checkout</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -217,8 +253,14 @@ export default function CartDrawer() {
                   </Link>
                   <Link
                     to="/checkout"
-                    onClick={closeCart}
-                    className="btn-premium btn-primary text-sm justify-center gap-2"
+                    onClick={(e) => {
+                      if (selectedItemIds.length === 0) {
+                        e.preventDefault();
+                      } else {
+                        closeCart();
+                      }
+                    }}
+                    className={`btn-premium btn-primary text-sm justify-center gap-2 ${selectedItemIds.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     Checkout <ArrowRight size={14} />
                   </Link>

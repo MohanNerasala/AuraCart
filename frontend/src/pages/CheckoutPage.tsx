@@ -108,7 +108,12 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Phone</label>
-                    <input name="phone" value={form.phone} onChange={handleChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-charcoal transition-colors" placeholder="+1 (555) 000-0000" />
+                    <div className="relative flex items-center">
+                      <div className="absolute left-0 top-0 bottom-0 flex items-center justify-center pl-4 pr-3 border-r border-gray-200 bg-gray-50/50 rounded-l-xl text-gray-600 text-sm font-semibold pointer-events-none">
+                        +91
+                      </div>
+                      <input name="phone" value={form.phone} onChange={handleChange} className="w-full pl-[68px] pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-charcoal transition-colors" placeholder="98765 43210" />
+                    </div>
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Shipping Address</label>

@@ -1,15 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
-import ProductsPage from './pages/ProductsPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
-import AuthPage from './pages/AuthPage';
-import OrdersPage from './pages/OrdersPage';
-import AdminPage from './pages/AdminPage';
+// Lazy Load Non-Critical Routes for Performance
+const ProductsPage = lazy(() => import('./pages/ProductsPage'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const CartPage = lazy(() => import('./pages/CartPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const AuthPage = lazy(() => import('./pages/AuthPage'));
+const OrdersPage = lazy(() => import('./pages/OrdersPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 import { useAuthStore } from './store/useAuthStore';
 
 const queryClient = new QueryClient({
@@ -59,7 +60,14 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
+        <Suspense 
+          fallback={
+            <div className="h-screen w-full flex items-center justify-center bg-white">
+              <div className="w-8 h-8 border-2 border-charcoal border-t-transparent rounded-full animate-spin" />
+            </div>
+          }
+        >
+          <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
@@ -91,7 +99,8 @@ export default function App() {
               }
             />
           </Route>
-        </Routes>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </QueryClientProvider>
   );
