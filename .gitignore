@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.DS_Store
+
+# Backend
+backend/target/
+*.jar
+*.war
+.idea/
+.vscode/
+*.iml
