@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -11,15 +11,24 @@ export default function CartDrawer() {
   const [updatingItemId, setUpdatingItemId] = useState<string | null>(null);
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
 
-  // Auto-select items when loaded or added
+  const prevItemsRef = useRef(items);
+
+  // Auto-select ONLY newly added items
   useEffect(() => {
-    setSelectedItemIds(prev => {
-      const currentIds = items.map(i => i.id);
-      if (prev.length === 0 && currentIds.length > 0) return currentIds;
-      const stillExisting = prev.filter(id => currentIds.includes(id));
-      const newItems = currentIds.filter(id => !prev.includes(id));
-      return [...stillExisting, ...newItems];
+    const prevIds = prevItemsRef.current.map(i => i.id);
+    const currentIds = items.map(i => i.id);
+    const newlyAddedIds = currentIds.filter(id => !prevIds.includes(id));
+
+    setSelectedItemIds(prevSelected => {
+      if (newlyAddedIds.length > 0) {
+        // When new items are added, select ONLY the new items
+        return newlyAddedIds;
+      }
+      // Otherwise keep valid existing selections
+      return prevSelected.filter(id => currentIds.includes(id));
     });
+
+    prevItemsRef.current = items;
   }, [items]);
 
   const toggleSelection = (id: string) => {
@@ -195,8 +204,14 @@ export default function CartDrawer() {
                             {/* Quantity Controls */}
                             <div className="flex items-center gap-1 bg-white rounded-lg border border-gray-200">
                               <button 
-                                onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                                disabled={item.quantity <= 1 || updatingItemId === item.id}
+                                onClick={() => {
+                                  if (item.quantity === 1) {
+                                    handleRemove(item.id);
+                                  } else {
+                                    handleUpdateQuantity(item.id, item.quantity - 1);
+                                  }
+                                }}
+                                disabled={updatingItemId === item.id}
                                 className="p-1.5 hover:bg-gray-50 rounded-l-lg transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-default"
                               >
                                 <Minus size={12} className="text-gray-500" />

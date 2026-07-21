@@ -125,8 +125,14 @@ export default function CartPage() {
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex items-center gap-1 border border-[#EEF0F3] bg-gray-50/50 rounded-xl overflow-hidden shadow-sm">
                         <button
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                          disabled={item.quantity <= 1}
+                          onClick={() => {
+                            if (item.quantity === 1) {
+                              handleRemove(item.id);
+                            } else {
+                              handleUpdateQuantity(item.id, item.quantity - 1);
+                            }
+                          }}
+                          disabled={updatingItemId === item.id}
                           className="p-2.5 hover:bg-white hover:text-black text-gray-500 disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer disabled:cursor-default"
                         >
                           <Minus size={14} strokeWidth={2.5} />

@@ -164,7 +164,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       onClick={() => navigate(`/products/${product.slug}`)}
       className="group relative h-full flex flex-col cursor-pointer"
     >
-      <div className="bg-white rounded-[20px] overflow-hidden border border-[#EEF0F3] transition-all duration-500 will-change-transform group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.06)] group-hover:border-transparent flex flex-col h-full">
+      <div className="bg-white rounded-[20px] overflow-hidden border border-[#EEF0F3] transition-all duration-500 group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.06)] group-hover:border-transparent flex flex-col h-full">
         
         {/* Image Container */}
         <div className="relative block aspect-[4/5] bg-[#F8FAFC] overflow-hidden p-6 flex items-center justify-center">
@@ -215,7 +215,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             >
               <button 
                 onClick={(e) => handleUpdateQuantity(e, quantityInCart - 1)}
-                disabled={quantityInCart <= 1 || isAdding}
+                disabled={isAdding}
                 className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
               >
                 <Minus size={14} strokeWidth={2.5} />

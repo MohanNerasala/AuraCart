@@ -174,7 +174,7 @@ export default function HomePage() {
                   hidden: { opacity: 1 },
                   visible: { opacity: 1, transition: { staggerChildren: 0.03, delayChildren: 0.1 } }
                 }}
-                className="text-[#111111] leading-[0.95] text-[48px] md:text-[64px] lg:text-[76px] xl:text-[84px] will-change-transform flex"
+                className="text-[#111111] leading-[0.95] text-[48px] md:text-[64px] lg:text-[76px] xl:text-[84px] flex"
               >
                 {"Premium".split("").map((char, index) => (
                   <motion.span
@@ -184,7 +184,6 @@ export default function HomePage() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
                     }}
                     className="inline-block"
-                    style={{ willChange: "transform, opacity" }}
                   >
                     {char}
                   </motion.span>
@@ -197,7 +196,7 @@ export default function HomePage() {
                   hidden: { opacity: 1 },
                   visible: { opacity: 1, transition: { staggerChildren: 0.03, delayChildren: 0.2 } }
                 }}
-                className="text-[#A7AFBA] leading-[0.95] text-[48px] md:text-[64px] lg:text-[76px] xl:text-[84px] will-change-transform flex"
+                className="text-[#A7AFBA] leading-[0.95] text-[48px] md:text-[64px] lg:text-[76px] xl:text-[84px] flex"
               >
                 {"Essentials".split("").map((char, index) => (
                   <motion.span
@@ -207,7 +206,6 @@ export default function HomePage() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
                     }}
                     className="inline-block"
-                    style={{ willChange: "transform, opacity" }}
                   >
                     {char}
                   </motion.span>
@@ -219,7 +217,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[#667085] text-[16px] md:text-[19px] max-w-[540px] mb-[40px] leading-[1.6] will-change-transform"
+              className="text-[#667085] text-[16px] md:text-[19px] max-w-[540px] mb-[40px] leading-[1.6]"
             >
               Curated minimalist fashion, tech, and lifestyle essentials for a sharper everyday look.
             </motion.p>
@@ -228,7 +226,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row items-center gap-[16px] mb-[48px] w-full sm:w-auto will-change-transform"
+              className="flex flex-col sm:flex-row items-center gap-[16px] mb-[48px] w-full sm:w-auto"
             >
               <Link
                 to="/products"
@@ -249,7 +247,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full flex justify-start will-change-transform"
+              className="w-full flex justify-start"
             >
               <div className="flex flex-wrap items-center gap-y-3 gap-x-[16px] sm:gap-x-[24px] text-gray-500">
                 <div className="flex items-center gap-2">
@@ -272,7 +270,12 @@ export default function HomePage() {
 
           {/* Right Column - Premium Hero Image Bento Grid */}
           <div className="w-full relative flex justify-center lg:justify-end">
-            <div className="w-full max-w-[480px] xl:max-w-[520px] aspect-[4/5] sm:aspect-square grid grid-cols-2 grid-rows-2 gap-3 sm:gap-4 relative will-change-transform gsap-reveal opacity-0 gpu-accelerate">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-[480px] xl:max-w-[520px] aspect-[4/5] sm:aspect-square grid grid-cols-2 grid-rows-2 gap-3 sm:gap-4 relative"
+            >
               {/* Left Tall Image - Fashion/Sneakers */}
               <div className="col-span-1 row-span-2 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_16px_40px_rgb(0,0,0,0.06)] border border-gray-100/50 bg-[#F8FAFC] group relative">
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 z-10" />
@@ -302,7 +305,7 @@ export default function HomePage() {
                   className="hero-parallax-img w-full h-[130%] object-cover -translate-y-[15%] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -310,7 +313,7 @@ export default function HomePage() {
       {/* ===== CATEGORIES SECTION ===== */}
       <section className="py-[120px] bg-white">
         <div className="page-container">
-          <div className="text-center mb-[72px] gsap-reveal opacity-0 gpu-accelerate">
+          <div className="text-center mb-[72px] gsap-reveal opacity-0">
             <div className="flex items-center justify-center gap-3 mb-[20px]">
               <div className="w-8 h-[1px] bg-[#111111]" />
               <span className="inline-block text-[#111111] text-[11px] font-[600] uppercase tracking-[0.25em] leading-none mt-[1px]">
@@ -335,7 +338,7 @@ export default function HomePage() {
                 return (
                   <div 
                     key={cat.slug} 
-                    className={`h-full gsap-stagger-item opacity-0 gpu-accelerate ${isFeatured ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : 'col-span-1 row-span-1'}`}
+                    className={`h-full gsap-stagger-item opacity-0 ${isFeatured ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : 'col-span-1 row-span-1'}`}
                   >
                     <Link
                       to={`/products?category=${cat.slug}`}
@@ -380,7 +383,7 @@ export default function HomePage() {
       {/* ===== FEATURED PRODUCTS SECTION ===== */}
       <section className="py-24 bg-off-white">
         <div className="page-container">
-          <div className="flex items-end justify-between mb-12 gsap-reveal opacity-0 gpu-accelerate">
+          <div className="flex items-end justify-between mb-12 gsap-reveal opacity-0">
             <div>
               <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent mb-3 block">
                 Featured
@@ -397,7 +400,7 @@ export default function HomePage() {
           {/* Horizontal Scrollable on Mobile, Grid on Desktop */}
           <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6 gsap-stagger-container">
             {diverseFeaturedProducts.slice(0, 8).map((product) => (
-              <div key={product.id} className="gsap-stagger-item opacity-0 gpu-accelerate">
+              <div key={product.id} className="gsap-stagger-item opacity-0">
                 <ProductCard product={product} />
               </div>
             ))}
@@ -417,7 +420,7 @@ export default function HomePage() {
       {/* ===== HERO BANNER ===== */}
       <section className="py-24 bg-white">
         <div className="page-container">
-          <div className="bg-charcoal rounded-3xl p-12 md:p-20 text-center relative overflow-hidden contain-paint gsap-reveal opacity-0 gpu-accelerate">
+          <div className="bg-charcoal rounded-3xl p-12 md:p-20 text-center relative overflow-hidden contain-paint gsap-reveal opacity-0">
             {/* Optimized static gradients instead of heavy blur */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-[60px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-[40px] pointer-events-none" />
@@ -444,7 +447,7 @@ export default function HomePage() {
              style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(10,10,10,0) 70%)' }} />
 
         <div className="page-container relative z-10">
-          <div className="text-center mb-20 gsap-reveal opacity-0 gpu-accelerate">
+          <div className="text-center mb-20 gsap-reveal opacity-0">
             <h2 className="text-[40px] md:text-[56px] font-[850] text-white tracking-tight mb-[16px] flex flex-wrap justify-center">
               <span className="flex">
                 {"The AuraCart Standard".split("").map((char, index) => (
@@ -482,7 +485,7 @@ export default function HomePage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="group relative bg-[#111111] p-10 md:p-12 rounded-[32px] border border-white/5 hover:border-white/20 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden gsap-stagger-item opacity-0 gpu-accelerate"
+                className="group relative bg-[#111111] p-10 md:p-12 rounded-[32px] border border-white/5 hover:border-white/20 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden gsap-stagger-item opacity-0"
               >
                 {/* Hover Ambient Glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -510,7 +513,7 @@ export default function HomePage() {
       {/* ===== NEWSLETTER ===== */}
       <section className="py-24 bg-white">
         <div className="page-container">
-          <div className="text-center max-w-lg mx-auto gsap-reveal opacity-0 gpu-accelerate">
+          <div className="text-center max-w-lg mx-auto gsap-reveal opacity-0">
             <h2 className="text-2xl md:text-3xl font-bold text-charcoal tracking-tight mb-3">
               Stay in the Loop
             </h2>
